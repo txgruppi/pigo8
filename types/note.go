@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	pitchMask    int = 0b00000000000011111111
-	waveformMask     = 0b000000000000000000001111
-	volumeMask       = 0b0000000000000000000000001111
+	pitchMask    int = 0b00000000000011111111000000000000
+	waveformMask     = 0b00000000000000000000111100000000
+	volumeMask       = 0b00000000000000000000000011110000
 	effectMask       = 0b00000000000000000000000000001111
 
 	pitchOffset    int = 12
@@ -17,7 +17,7 @@ const (
 	effectOffset       = 0
 )
 
-func NewNode() Note {
+func NewNote() Note {
 	return &_Note{}
 }
 

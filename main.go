@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/txgruppi/pigo8/encoding/p8"
 )
 
@@ -15,7 +14,7 @@ func main() {
 }
 
 func run() error {
-	data, err := ioutil.ReadFile("/Users/txgruppi/code/src/github.com/txgruppi/pigo8/original.p8")
+	data, err := ioutil.ReadFile("/mnt/code/src/github.com/txgruppi/pigo8/original.p8")
 	if err != nil {
 		return err
 	}
@@ -24,8 +23,9 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	if true {
-		spew.Dump(cart)
+	newData, err := encoding.Encode(cart)
+	if err != nil {
+		return err
 	}
-	return nil
+	return ioutil.WriteFile("/mnt/code/src/github.com/txgruppi/pigo8/ln.p8", newData, 0600)
 }

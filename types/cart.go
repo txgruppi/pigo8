@@ -11,6 +11,8 @@ type Cart interface {
 	SetCode(CodeSection)
 	GetSprite() SpriteSection
 	SetSprite(SpriteSection)
+	GetSpriteFlag() SpriteFlagSection
+	SetSpriteFlag(SpriteFlagSection)
 	GetMap() MapSection
 	SetMap(MapSection)
 	GetSoundEffect() SoundEffectSection
@@ -25,6 +27,7 @@ type _Cart struct {
 	header             Header
 	codeSection        CodeSection
 	spriteSection      SpriteSection
+	spriteFlagSection  SpriteFlagSection
 	mapSection         MapSection
 	soundEffectSection SoundEffectSection
 	musicSection       MusicSection
@@ -53,6 +56,14 @@ func (t *_Cart) GetSprite() SpriteSection {
 
 func (t *_Cart) SetSprite(v SpriteSection) {
 	t.spriteSection = v
+}
+
+func (t *_Cart) GetSpriteFlag() SpriteFlagSection {
+	return t.spriteFlagSection
+}
+
+func (t *_Cart) SetSpriteFlag(v SpriteFlagSection) {
+	t.spriteFlagSection = v
 }
 
 func (t *_Cart) GetMap() MapSection {

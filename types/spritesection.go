@@ -3,34 +3,43 @@ package types
 import (
 	"github.com/txgruppi/pigo8/checks"
 	"github.com/txgruppi/pigo8/errors"
+	"github.com/txgruppi/pigo8/utils"
 )
 
 func NewSpriteSection() SpriteSection {
 	return &_SpriteSection{
-		items: map[int]Sprite{},
+		items: map[int]color{},
 	}
 }
 
 type SpriteSection interface {
-	GetSprite(index int) (Sprite, error)
-	SetSprite(index int, s Sprite) error
+	GetPixel(x, y int) (color, error)
+	SetPixel(x, y int, c color) error
 }
 
 type _SpriteSection struct {
-	items map[int]Sprite
+	items map[int]color
 }
 
-func (t *_SpriteSection) GetSprite(index int) (Sprite, error) {
-	if !checks.IsUint8(index) {
-		return nil, errors.NewErrValueRangeUint8(index)
+func (t *_SpriteSection) GetPixel(x, y int) (color, error) {
+	if !checks.IsUint7(x) {
+		return Color0, errors.NewErrValueRangeUint7(x)
 	}
-	return t.items[index], nil
+	if !checks.IsUint7(y) {
+		return Color0, errors.NewErrValueRangeUint7(y)
+	}
+	i := utils.CoordsToIndex(128, x, y)
+	return t.items[i], nil
 }
 
-func (t *_SpriteSection) SetSprite(index int, s Sprite) error {
-	if !checks.IsUint8(index) {
-		return errors.NewErrValueRangeUint8(index)
+func (t *_SpriteSection) SetPixel(x, y int, c color) error {
+	if !checks.IsUint7(x) {
+		return errors.NewErrValueRangeUint7(x)
 	}
-	t.items[index] = s
+	if !checks.IsUint7(y) {
+		return errors.NewErrValueRangeUint7(y)
+	}
+	i := utils.CoordsToIndex(128, x, y)
+	t.items[i] = c
 	return nil
 }

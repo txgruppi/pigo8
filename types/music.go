@@ -8,9 +8,10 @@ import (
 type musicPattern uint8
 
 const (
-	BeginPatternLoop   musicPattern = 0
-	EndPatternLoop                  = 1
-	StopAtEndOfPattern              = 2
+	NoPattern          musicPattern = 0
+	BeginPatternLoop                = 1
+	EndPatternLoop                  = 2
+	StopAtEndOfPattern              = 4
 
 	ch0Mute int = 0x41
 	ch1Mute int = 0x42
@@ -19,7 +20,32 @@ const (
 )
 
 func NewMusic() Music {
-	return &_Music{}
+	return &_Music{
+		items: map[int]int{},
+	}
+}
+
+func MusicPatternFromInt(i int) (musicPattern, error) {
+	switch i {
+	case 0:
+		return NoPattern, nil
+	case 1:
+		return BeginPatternLoop, nil
+	case 2:
+		return EndPatternLoop, nil
+	case 3:
+		return BeginPatternLoop | EndPatternLoop, nil
+	case 4:
+		return StopAtEndOfPattern, nil
+	case 5:
+		return BeginPatternLoop | StopAtEndOfPattern, nil
+	case 6:
+		return EndPatternLoop | StopAtEndOfPattern, nil
+	case 7:
+		return BeginPatternLoop | EndPatternLoop | StopAtEndOfPattern, nil
+	default:
+		return BeginPatternLoop, errors.NewErrInvalidMusicPattern(i)
+	}
 }
 
 type Music interface {

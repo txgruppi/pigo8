@@ -13,6 +13,17 @@ func NewSoundEffect() SoundEffect {
 	}
 }
 
+func SoundEffectModeFromInt(i int) (soundEffectMode, error) {
+	switch i {
+	case 0:
+		return PitchMode, nil
+	case 1:
+		return NoteMode, nil
+	default:
+		return PitchMode, errors.NewErrInvalidSoundEffectMode(i)
+	}
+}
+
 const (
 	PitchMode soundEffectMode = iota
 	NoteMode

@@ -11,6 +11,7 @@ require (
 	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/godoctor/godoctor v0.0.0-20200702010311-8433dcb3dc61 // indirect
 	github.com/golangci/golangci-lint v1.31.0 // indirect
+	github.com/golobby/repl v0.0.0-20191019193237-da6c0b527cea // indirect
 	github.com/haya14busa/gopkgs v1.0.0 // indirect
 	github.com/josharian/impl v1.0.0 // indirect
 	github.com/keegancsmith/rpc v1.3.0 // indirect
