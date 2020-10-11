@@ -11,35 +11,35 @@ import (
 func (t *P8Encoding) Encode(cart types.Cart) ([]byte, error) {
 	var b bytes.Buffer
 
-	if err := t.encodeHeader(cart.GetHeader(), &b); err != nil {
+	if err := t.EncodeHeader(cart.GetHeader(), &b); err != nil {
 		return nil, err
 	}
-	if err := t.encodeCode(cart.GetCode(), &b); err != nil {
+	if err := t.EncodeCode(cart.GetCode(), &b, true); err != nil {
 		return nil, err
 	}
-	if err := t.encodeSprites(cart.GetSprite(), &b); err != nil {
+	if err := t.EncodeSprite(cart.GetSprite(), &b, true); err != nil {
 		return nil, err
 	}
-	if err := t.encodeSpriteFlags(cart.GetSpriteFlag(), &b); err != nil {
+	if err := t.EncodeSpriteFlag(cart.GetSpriteFlag(), &b, true); err != nil {
 		return nil, err
 	}
-	if err := t.encodeMap(cart.GetMap(), &b); err != nil {
+	if err := t.EncodeMap(cart.GetMap(), &b, true); err != nil {
 		return nil, err
 	}
-	if err := t.encodeSoundEffects(cart.GetSoundEffect(), &b); err != nil {
+	if err := t.EncodeSoundEffect(cart.GetSoundEffect(), &b, true); err != nil {
 		return nil, err
 	}
-	if err := t.encodeMusic(cart.GetMusic(), &b); err != nil {
+	if err := t.EncodeMusic(cart.GetMusic(), &b, true); err != nil {
 		return nil, err
 	}
-	if err := t.encodeLabel(cart.GetLabel(), &b); err != nil {
+	if err := t.EncodeLabel(cart.GetLabel(), &b, true); err != nil {
 		return nil, err
 	}
 
 	return b.Bytes(), nil
 }
 
-func (t *P8Encoding) encodeHeader(s types.Header, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeHeader(s types.Header, b *bytes.Buffer) error {
 	if s == nil {
 		return nil
 	}
@@ -49,13 +49,15 @@ func (t *P8Encoding) encodeHeader(s types.Header, b *bytes.Buffer) error {
 	return nil
 }
 
-func (t *P8Encoding) encodeCode(s types.CodeSection, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeCode(s types.CodeSection, b *bytes.Buffer, includeTag bool) error {
 	if s == nil {
 		return nil
 	}
 
-	if _, err := b.WriteString(fmt.Sprintf("__lua__\n")); err != nil {
-		return err
+	if includeTag {
+		if _, err := b.WriteString(fmt.Sprintf("__lua__\n")); err != nil {
+			return err
+		}
 	}
 
 	for i := 0; i < 16; i++ {
@@ -84,13 +86,15 @@ func (t *P8Encoding) encodeCode(s types.CodeSection, b *bytes.Buffer) error {
 	return nil
 }
 
-func (t *P8Encoding) encodeSprites(s types.SpriteSection, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeSprite(s types.SpriteSection, b *bytes.Buffer, includeTag bool) error {
 	if s == nil {
 		return nil
 	}
 
-	if _, err := b.WriteString(fmt.Sprintf("__gfx__\n")); err != nil {
-		return err
+	if includeTag {
+		if _, err := b.WriteString(fmt.Sprintf("__gfx__\n")); err != nil {
+			return err
+		}
 	}
 
 	for y := 0; y < 128; y++ {
@@ -111,13 +115,15 @@ func (t *P8Encoding) encodeSprites(s types.SpriteSection, b *bytes.Buffer) error
 	return nil
 }
 
-func (t *P8Encoding) encodeSpriteFlags(s types.SpriteFlagSection, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeSpriteFlag(s types.SpriteFlagSection, b *bytes.Buffer, includeTag bool) error {
 	if s == nil {
 		return nil
 	}
 
-	if _, err := b.WriteString(fmt.Sprintf("__gff__\n")); err != nil {
-		return err
+	if includeTag {
+		if _, err := b.WriteString(fmt.Sprintf("__gff__\n")); err != nil {
+			return err
+		}
 	}
 
 	for i := 0; i < 256; i++ {
@@ -138,13 +144,15 @@ func (t *P8Encoding) encodeSpriteFlags(s types.SpriteFlagSection, b *bytes.Buffe
 	return nil
 }
 
-func (t *P8Encoding) encodeMap(s types.MapSection, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeMap(s types.MapSection, b *bytes.Buffer, includeTag bool) error {
 	if s == nil {
 		return nil
 	}
 
-	if _, err := b.WriteString(fmt.Sprintf("__map__\n")); err != nil {
-		return err
+	if includeTag {
+		if _, err := b.WriteString(fmt.Sprintf("__map__\n")); err != nil {
+			return err
+		}
 	}
 
 	for y := 0; y < 32; y++ {
@@ -165,13 +173,15 @@ func (t *P8Encoding) encodeMap(s types.MapSection, b *bytes.Buffer) error {
 	return nil
 }
 
-func (t *P8Encoding) encodeSoundEffects(s types.SoundEffectSection, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeSoundEffect(s types.SoundEffectSection, b *bytes.Buffer, includeTag bool) error {
 	if s == nil {
 		return nil
 	}
 
-	if _, err := b.WriteString(fmt.Sprintf("__sfx__\n")); err != nil {
-		return err
+	if includeTag {
+		if _, err := b.WriteString(fmt.Sprintf("__sfx__\n")); err != nil {
+			return err
+		}
 	}
 
 	for y := 0; y < 64; y++ {
@@ -230,13 +240,15 @@ func (t *P8Encoding) encodeSoundEffects(s types.SoundEffectSection, b *bytes.Buf
 	return nil
 }
 
-func (t *P8Encoding) encodeMusic(s types.MusicSection, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeMusic(s types.MusicSection, b *bytes.Buffer, includeTag bool) error {
 	if s == nil {
 		return nil
 	}
 
-	if _, err := b.WriteString(fmt.Sprintf("__music__\n")); err != nil {
-		return err
+	if includeTag {
+		if _, err := b.WriteString(fmt.Sprintf("__music__\n")); err != nil {
+			return err
+		}
 	}
 
 	for y := 0; y < 64; y++ {
@@ -270,13 +282,15 @@ func (t *P8Encoding) encodeMusic(s types.MusicSection, b *bytes.Buffer) error {
 	return nil
 }
 
-func (t *P8Encoding) encodeLabel(s types.LabelSection, b *bytes.Buffer) error {
+func (t *P8Encoding) EncodeLabel(s types.LabelSection, b *bytes.Buffer, includeTag bool) error {
 	if s == nil {
 		return nil
 	}
 
-	if _, err := b.WriteString(fmt.Sprintf("__label__\n")); err != nil {
-		return err
+	if includeTag {
+		if _, err := b.WriteString(fmt.Sprintf("__label__\n")); err != nil {
+			return err
+		}
 	}
 
 	for y := 0; y < 128; y++ {

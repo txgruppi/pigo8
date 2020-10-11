@@ -42,49 +42,49 @@ func (t *P8Encoding) Decode(data []byte) (types.Cart, error) {
 		switch key {
 		case "__lua__":
 			{
-				if err := t.decodeCodeSection(cart, lines, start, end); err != nil {
+				if err := t.DecodeCode(cart, lines[start+1:end]); err != nil {
 					return nil, err
 				}
 			}
 
 		case "__gfx__":
 			{
-				if err := t.decodeSpriteSection(cart, lines, start, end); err != nil {
+				if err := t.DecodeSprite(cart, lines[start+1:end]); err != nil {
 					return nil, err
 				}
 			}
 
 		case "__gff__":
 			{
-				if err := t.decodeSpriteFlags(cart, lines, start, end); err != nil {
+				if err := t.DecodeSpriteFlag(cart, lines[start+1:end]); err != nil {
 					return nil, err
 				}
 			}
 
 		case "__map__":
 			{
-				if err := t.decodeMap(cart, lines, start, end); err != nil {
+				if err := t.DecodeMap(cart, lines[start+1:end]); err != nil {
 					return nil, err
 				}
 			}
 
 		case "__sfx__":
 			{
-				if err := t.decodeSoundEffects(cart, lines, start, end); err != nil {
+				if err := t.DecodeSoundEffect(cart, lines[start+1:end]); err != nil {
 					return nil, err
 				}
 			}
 
 		case "__music__":
 			{
-				if err := t.decodeMusic(cart, lines, start, end); err != nil {
+				if err := t.DecodeMusic(cart, lines[start+1:end]); err != nil {
 					return nil, err
 				}
 			}
 
 		case "__label__":
 			{
-				if err := t.decodeLabel(cart, lines, start, end); err != nil {
+				if err := t.DecodeLabel(cart, lines[start+1:end]); err != nil {
 					return nil, err
 				}
 			}
@@ -111,8 +111,8 @@ func (t *P8Encoding) decodeHeader(cart types.Cart, lines [][]byte) error {
 	return nil
 }
 
-func (t *P8Encoding) decodeCodeSection(cart types.Cart, lines [][]byte, start, end int) error {
-	lines = t.trimLines(lines[start+1 : end])
+func (t *P8Encoding) DecodeCode(cart types.Cart, lines [][]byte) error {
+	lines = t.trimLines(lines)
 
 	tabs := [][]byte{}
 	for i, j := 0, 0; i < len(lines); i++ {
@@ -136,8 +136,8 @@ func (t *P8Encoding) decodeCodeSection(cart types.Cart, lines [][]byte, start, e
 	return nil
 }
 
-func (t *P8Encoding) decodeSpriteSection(cart types.Cart, lines [][]byte, start, end int) error {
-	lines = t.trimLines(lines[start+1 : end])
+func (t *P8Encoding) DecodeSprite(cart types.Cart, lines [][]byte) error {
+	lines = t.trimLines(lines)
 
 	spriteSection := types.NewSpriteSection()
 
@@ -162,8 +162,8 @@ func (t *P8Encoding) decodeSpriteSection(cart types.Cart, lines [][]byte, start,
 	return nil
 }
 
-func (t *P8Encoding) decodeSpriteFlags(cart types.Cart, lines [][]byte, start, end int) error {
-	lines = t.trimLines(lines[start+1 : end])
+func (t *P8Encoding) DecodeSpriteFlag(cart types.Cart, lines [][]byte) error {
+	lines = t.trimLines(lines)
 
 	spriteFlagSection := types.NewSpriteFlagSection()
 
@@ -186,8 +186,8 @@ func (t *P8Encoding) decodeSpriteFlags(cart types.Cart, lines [][]byte, start, e
 	return nil
 }
 
-func (t *P8Encoding) decodeMap(cart types.Cart, lines [][]byte, start, end int) error {
-	lines = t.trimLines(lines[start+1 : end])
+func (t *P8Encoding) DecodeMap(cart types.Cart, lines [][]byte) error {
+	lines = t.trimLines(lines)
 
 	mapSection := types.NewMapSection()
 	for y := 0; y < len(lines); y++ {
@@ -207,8 +207,8 @@ func (t *P8Encoding) decodeMap(cart types.Cart, lines [][]byte, start, end int) 
 	return nil
 }
 
-func (t *P8Encoding) decodeSoundEffects(cart types.Cart, lines [][]byte, start, end int) error {
-	lines = t.trimLines(lines[start+1 : end])
+func (t *P8Encoding) DecodeSoundEffect(cart types.Cart, lines [][]byte) error {
+	lines = t.trimLines(lines)
 
 	soundEffectSection := types.NewSoundEffectSection()
 	id := 0
@@ -290,8 +290,8 @@ func (t *P8Encoding) decodeSoundEffects(cart types.Cart, lines [][]byte, start, 
 	return nil
 }
 
-func (t *P8Encoding) decodeMusic(cart types.Cart, lines [][]byte, start, end int) error {
-	lines = t.trimLines(lines[start+1 : end])
+func (t *P8Encoding) DecodeMusic(cart types.Cart, lines [][]byte) error {
+	lines = t.trimLines(lines)
 
 	musicSection := types.NewMusicSection()
 
@@ -333,8 +333,8 @@ func (t *P8Encoding) decodeMusic(cart types.Cart, lines [][]byte, start, end int
 	return nil
 }
 
-func (t *P8Encoding) decodeLabel(cart types.Cart, lines [][]byte, start, end int) error {
-	lines = t.trimLines(lines[start+1 : end])
+func (t *P8Encoding) DecodeLabel(cart types.Cart, lines [][]byte) error {
+	lines = t.trimLines(lines)
 
 	labelSection := types.NewLabelSection()
 

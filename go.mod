@@ -18,6 +18,7 @@ require (
 	github.com/nsf/gocode v0.0.0-20190302080247-5bee97b48836 // indirect
 	github.com/rogpeppe/godef v1.1.2 // indirect
 	github.com/stamblerre/gocode v1.0.0 // indirect
+	github.com/urfave/cli/v2 v2.2.0
 	github.com/willf/bitset v1.1.11 // indirect
 	golang.org/x/net v0.0.0-20201009032441-dbdefad45b89 // indirect
 	golang.org/x/tools v0.0.0-20201010145503-6e5c6d77ddcc // indirect
