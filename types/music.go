@@ -12,11 +12,6 @@ const (
 	BeginPatternLoop                = 1
 	EndPatternLoop                  = 2
 	StopAtEndOfPattern              = 4
-
-	ch0Mute int = 0x41
-	ch1Mute int = 0x42
-	ch2Mute int = 0x43
-	ch3Mute int = 0x44
 )
 
 func NewMusic() Music {
@@ -53,7 +48,6 @@ type Music interface {
 	SetPatternFlags(musicPattern) error
 	GetChannel(int) (int, error)
 	SetChannel(int, int) error
-	MuteChannel(int) error
 }
 
 type _Music struct {
@@ -81,27 +75,8 @@ func (t *_Music) SetChannel(index, id int) error {
 	if !checks.IsUint2(index) {
 		return errors.NewErrValueRangeUint2(index)
 	}
-	if !checks.IsUint6(id) {
-		return errors.NewErrValueRangeUint6(index)
-	}
-	t.items[index] = id
-	return nil
-}
-
-func (t *_Music) MuteChannel(index int) error {
-	if !checks.IsUint2(index) {
-		return errors.NewErrValueRangeUint2(index)
-	}
-	var id int
-	switch index {
-	case 0:
-		id = ch0Mute
-	case 1:
-		id = ch1Mute
-	case 2:
-		id = ch2Mute
-	case 3:
-		id = ch3Mute
+	if !checks.IsUint7(id) {
+		return errors.NewErrValueRangeUint6(id)
 	}
 	t.items[index] = id
 	return nil

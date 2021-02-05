@@ -13,12 +13,25 @@ func NewSpriteSection() SpriteSection {
 }
 
 type SpriteSection interface {
+	GetSprite(id int) (Sprite, error)
 	GetPixel(x, y int) (color, error)
 	SetPixel(x, y int, c color) error
 }
 
 type _SpriteSection struct {
 	items map[int]color
+}
+
+func (t *_SpriteSection) GetSprite(id int) (Sprite, error) {
+	if !checks.IsUint8(id) {
+		return nil, errors.NewErrValueRangeUint8(id)
+	}
+	x, y := utils.IndexToCoords(16, id)
+	return &_Sprite{
+		section: SpriteSection(t),
+		xOffset: x * 8,
+		yOffset: y * 8,
+	}, nil
 }
 
 func (t *_SpriteSection) GetPixel(x, y int) (color, error) {

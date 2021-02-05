@@ -314,12 +314,6 @@ func (t *P8Encoding) DecodeMusic(cart types.Cart, lines [][]byte) error {
 			if err != nil {
 				return err
 			}
-			if n == 0x41+x {
-				if err := music.MuteChannel(x); err != nil {
-					return err
-				}
-				continue
-			}
 			if err := music.SetChannel(x, n); err != nil {
 				return err
 			}
@@ -360,10 +354,13 @@ func (t *P8Encoding) DecodeLabel(cart types.Cart, lines [][]byte) error {
 }
 
 func (t *P8Encoding) trimLines(lines [][]byte) [][]byte {
-	for lines[0] == nil || len(lines[0]) == 0 {
+	if lines == nil {
+		return lines
+	}
+	for len(lines) > 0 && (lines[0] == nil || len(lines[0]) == 0) {
 		lines = lines[1:]
 	}
-	for lines[len(lines)-1] == nil || len(lines[len(lines)-1]) == 0 {
+	for len(lines) > 0 && (lines[len(lines)-1] == nil || len(lines[len(lines)-1]) == 0) {
 		lines = lines[:len(lines)-1]
 	}
 	return lines

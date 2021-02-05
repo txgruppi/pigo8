@@ -97,7 +97,22 @@ func (t *P8Encoding) EncodeSprite(s types.SpriteSection, b *bytes.Buffer, includ
 		}
 	}
 
-	for y := 0; y < 128; y++ {
+	lowestLine := 127
+mainLoop:
+	for y := lowestLine; y >= 0; y-- {
+		lowestLine = y
+		for x := 0; x < 128; x++ {
+			c, err := s.GetPixel(x, y)
+			if err != nil {
+				return err
+			}
+			if c != types.Color0 {
+				break mainLoop
+			}
+		}
+	}
+
+	for y := 0; y < lowestLine+1; y++ {
 		for x := 0; x < 128; x++ {
 			c, err := s.GetPixel(x, y)
 			if err != nil {
@@ -155,7 +170,22 @@ func (t *P8Encoding) EncodeMap(s types.MapSection, b *bytes.Buffer, includeTag b
 		}
 	}
 
-	for y := 0; y < 32; y++ {
+	lowestLine := 31
+mainLoop:
+	for y := lowestLine; y >= 0; y-- {
+		lowestLine = y
+		for x := 0; x < 128; x++ {
+			id, err := s.GetTile(x, y)
+			if err != nil {
+				return err
+			}
+			if id != 0 {
+				break mainLoop
+			}
+		}
+	}
+
+	for y := 0; y < lowestLine+1; y++ {
 		for x := 0; x < 128; x++ {
 			id, err := s.GetTile(x, y)
 			if err != nil {

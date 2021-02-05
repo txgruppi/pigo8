@@ -46,6 +46,23 @@ func NewApp() *cli.App {
 					)
 				},
 			},
+			&cli.Command{
+				Name: "render",
+				Flags: []cli.Flag{
+					&cli.StringFlag{Name: "section"},
+					&cli.StringFlag{Name: "input"},
+					&cli.StringFlag{Name: "output"},
+					&cli.IntFlag{Name: "scale", Value: 1},
+				},
+				Action: func(c *cli.Context) error {
+					return actions.Render(
+						c.String("section"),
+						c.String("input"),
+						c.String("output"),
+						c.Int("scale"),
+					)
+				},
+			},
 		},
 	}
 	return app
